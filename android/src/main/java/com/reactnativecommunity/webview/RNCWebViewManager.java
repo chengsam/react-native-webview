@@ -730,6 +730,14 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
       }
 
       super.onReceivedSslError(view, handler, error);
+
+      WritableMap eventData = createWebViewEvent(view, error.getUrl());
+      eventData.putInt("statusCode", 0);
+      eventData.putString("description", "SSL error");
+
+      dispatchEvent(
+        view,
+        new TopHttpErrorEvent(view.getId(), eventData));
     }
 
     @Override
